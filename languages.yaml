@@ -1,0 +1,23 @@
+en:
+  PLUGIN_IP_BLACKLIST:
+    ABUSEIPDB_KEY: <a href="https://www.abuseipdb.com/account/api">AbuseIPDB API Key</a>
+    ABUSEIPDB_KEY_HELP: Querying the AbuseIPDB blocklist or reporting abusive IPs requires a free API Key
+    BLACKLISTING: Blacklisting
+    BLACKLISTING_TEXT: 'When blacklisting is enabled incoming requests will have their IP matched against the blacklists selected below. Matching requests will recieve the HTTP response selected below, and no further processing will take place.</br></br><strong>Note</strong>: A free <a href="https://www.abuseipdb.com/account/api">AbuseIPDB API Key</a> is required to fetch the AbuseIPDB blacklist. The local blacklist can be used on its own, but will only be added-to when Filtering is enabled (see section below).'
+    BLACKLISTING_ENABLE_BLACKLISTING: Enable blacklisting
+    BLACKLISTING_ENABLE_BLACKLISTING_HELP: Whether or not to blacklist incoming requests based on IP address
+    BLACKLIST_RESPONSE: Response
+    BLACKLIST_RESPONSE_HELP: The HTTP response to send to requests from blacklisted IPs
+    BLACKLIST_SOURCES: Blacklists
+    BLACKLIST_SOURCES_HELP: The blacklists used to check the IPs of incoming requests against
+    BLACKLIST_SOURCES_LOCAL: Local
+    BLACKLIST_SOURCES_ABUSEIPDB: AbuseIPDB
+    FILTERING: Filtering
+    FILTERING_TEXT: 'When filtering is enabled incoming requests will have their <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs">URI</a> matched against the filters below. Matching (abusive) requests will have their IPs added to the local IP blacklist and, if reporting is enabled, will be reported to AbuseIPDB.</br></br><strong>Note</strong>: A free <a href="https://www.abuseipdb.com/account/api">AbuseIPDB API Key</a> and the <a href="https://www.abuseipdb.com/account/request-reporting-privilege">Reporting Privilege</a> are required to submit reports to AbuseIPDB. You can still filter incoming requests without these, but only the local IP blacklist will be updated with abusive IPs.'
+    ENABLE_FILTERING: Enable filtering
+    ENABLE_FILTERING_HELP: Whether or not to filter url path of incoming requests against abuse filters
+    ENABLE_REPORTING: Enable reporting
+    ENABLE_REPORTING_HELP: Whether or not to report abusive IPs detected from incoming requests
+    FILTERS: 'Filters:'
+    FILTERS_PATTERN: Pattern (regex)
+    FILTERS_ENABLED: Enable

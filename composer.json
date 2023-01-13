@@ -1,0 +1,30 @@
+{
+  "name": "aricooperdavis/ip-blacklist",
+  "type": "grav-plugin",
+  "description": "Detects and blocks abusive IPs, and allows fetching blacklists from and reporting IPs to AbuseIPDB.",
+  "keywords": ["plugin"],
+  "homepage": "https://github.com/aricooperdavis/grav-plugin-ip-blacklist",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ari Cooper-Davis",
+      "email": "grav@cooper-davis.net",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.3",
+    "guzzlehttp/guzzle": "^6.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Grav\\Plugin\\IPBlacklist\\": "classes/"
+    },
+    "classmap":  ["ip-blacklist.php"]
+  },
+  "config": {
+    "platform": {
+      "php": "7.1.3"
+    }
+  }
+}

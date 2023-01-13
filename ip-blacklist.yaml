@@ -1,0 +1,13 @@
+enabled: true
+abuseipdb_key: null
+enable_blacklisting: false
+sources:
+  local: false
+  abuseipdb: false
+response: '400'
+enable_reporting: false
+enable_filtering: false
+filters:
+  -
+    pattern: '\?XDEBUG_SESSION_START=.*'
+    enabled: '0'

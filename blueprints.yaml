@@ -1,0 +1,121 @@
+name: IP Blacklist
+slug: ip-blacklist
+type: plugin
+version: 0.1.0
+description: Detects and blocks abusive IPs, and allows fetching blacklists from and reporting IPs to AbuseIPDB.
+icon: filter
+author:
+  name: Ari Cooper-Davis
+  email: grav@cooper-davis.net
+homepage: https://github.com/aricooperdavis/grav-plugin-ip-blacklist
+demo: http://demo.yoursite.com
+keywords: grav, plugin, etc
+bugs: https://github.com/aricooperdavis/grav-plugin-ip-blacklist/issues
+docs: https://github.com/aricooperdavis/grav-plugin-ip-blacklist/blob/develop/README.md
+license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.6.0' }
+
+form:
+  validation: loose
+  fields:
+    enabled:
+      type: toggle
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+    abuseipdb_key:
+      type: text
+      label: PLUGIN_IP_BLACKLIST.ABUSEIPDB_KEY
+      default: ''
+      placeholder: your_abuseipdb_api_key
+      help: PLUGIN_IP_BLACKLIST.ABUSEIPDB_KEY_HELP
+    blacklist:
+      type: section
+      title: PLUGIN_IP_BLACKLIST.BLACKLISTING
+      text: PLUGIN_IP_BLACKLIST.BLACKLISTING_TEXT
+      fields:
+        enable_blacklisting:
+          type: toggle
+          label: PLUGIN_IP_BLACKLIST.BLACKLISTING_ENABLE_BLACKLISTING
+          help: PLUGIN_IP_BLACKLIST.BLACKLISTING_ENABLE_BLACKLISTING_HELP
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool
+        sources:
+          type: checkboxes
+          label: PLUGIN_IP_BLACKLIST.BLACKLIST_SOURCES
+          help: PLUGIN_IP_BLACKLIST.BLACKLIST_SOURCES_HELP
+          use: keys
+          default:
+            local: false
+            abuseipdb: false
+          options:
+            local: PLUGIN_IP_BLACKLIST.BLACKLIST_SOURCES_LOCAL
+            abuseipdb: PLUGIN_IP_BLACKLIST.BLACKLIST_SOURCES_ABUSEIPDB
+        response:
+          type: select
+          label: PLUGIN_IP_BLACKLIST.BLACKLIST_RESPONSE
+          help: PLUGIN_IP_BLACKLIST.BLACKLIST_RESPONSE_HELP
+          default: 400
+          options:
+            400: "400 - Bad Request"
+            403: "403 - Forbidden"
+            418: "418 - I'm a teapot"
+            503: "503 - Service Unavailable"
+    filtering:
+      type: section
+      title: PLUGIN_IP_BLACKLIST.FILTERING
+      text: PLUGIN_IP_BLACKLIST.FILTERING_TEXT
+      fields:
+        enable_filtering:
+          type: toggle
+          label: PLUGIN_IP_BLACKLIST.ENABLE_FILTERING
+          help: PLUGIN_IP_BLACKLIST.ENABLE_FILTERING_HELP
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool
+        enable_reporting:
+          type: toggle
+          label: PLUGIN_IP_BLACKLIST.ENABLE_REPORTING
+          help: PLUGIN_IP_BLACKLIST.ENABLE_REPORTING_HELP
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool
+        filters:
+          type: list
+          collapsed: false
+          style: vertical
+          label: PLUGIN_IP_BLACKLIST.FILTERS
+          fields:
+            .pattern:
+              type: text
+              label: PLUGIN_IP_BLACKLIST.FILTERS_PATTERN
+            .enabled:
+              type: toggle
+              label: PLUGIN_IP_BLACKLIST.FILTERS_ENABLED
+              highlight: 1
+              default: 1
+              options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+              validation:
+                type: bool
