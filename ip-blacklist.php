@@ -2,9 +2,11 @@
 namespace Grav\Plugin;
 
 use Composer\Autoload\ClassLoader;
+use Grav\Common\Grav;
 use Grav\Common\Plugin;
 use Grav\Common\Filesystem\Folder;
 use Grav\Framework\Psr7\Response;
+use RocketTheme\Toolbox\Event\Event;
 
 use GuzzleHttp\Client;
 use SQLite3;
@@ -16,7 +18,7 @@ use SQLite3;
 class IPBlacklistPlugin extends Plugin
 {
 
-    public $db;
+    public static $db;
 
     /**
      * @return array
@@ -54,14 +56,10 @@ class IPBlacklistPlugin extends Plugin
      */
     public function onPluginsInitialized(): void
     {
-        // Don't proceed if we are in the admin plugin
-        if ($this->isAdmin()) {
-            return;
-        }
-
         // Enable the main events we are interested in
         $this->enable([
             'onRequestHandlerInit' => ['onRequestHandlerInit', 0],
+            'onSchedulerInitialized' => ['onSchedulerInitialized', 0],
         ]);
         return;
     }
@@ -104,6 +102,20 @@ class IPBlacklistPlugin extends Plugin
                     break;
                 }
             }
+        }
+    }
+
+    /**
+     * Add auto_cache event to scheduler
+     */
+    public function onSchedulerInitialized(Event $e)
+    {
+        $config = $this->config();
+        if ($config['enable_auto_cache'] && $config['enable_blacklisting'] && $config['sources']['abuseipdb']) {
+            $scheduler = $e['scheduler'];
+            $job = $scheduler->addFunction('Grav\Plugin\IPBlacklistPlugin::updateAbuseipdbBlacklist', [], 'ip-blacklist-auto-cache');
+            $job->backlink('plugins/ip-blacklist');
+            $job->at('45 2 * * *');
         }
     }
 
@@ -152,12 +164,12 @@ class IPBlacklistPlugin extends Plugin
     /**
      * Updates the AbuseIPDB blacklist using the AbuseIPDB API
      */
-    public function updateAbuseipdbBlacklist()
+    public static function updateAbuseipdbBlacklist()
     {
-        $db = $this->getDatabase();
-        $config = $this->config();
+        $db = self::getDatabase();
+        $config = Grav::instance()['config']->get('plugins.ip-blacklist');
         if (!isset($config['abuseipdb_key'])) {
-            $this->grav['log']->debug('Cannot update AbuseIPDB blacklist without API key.');
+            Grav::instance()['log']->debug('Cannot update AbuseIPDB blacklist without API key.');
             return;
         }
 
@@ -177,7 +189,7 @@ class IPBlacklistPlugin extends Plugin
         ]);
         if ($response->getStatusCode() != 200) {
             // TODO: update plugin config to disable AbuseIPDB if api unauthorised
-            $this->grav['log']->debug('Could not update AbuseIPDB blacklist: '.$response->getBody());
+            Grav::instance()['log']->debug('Could not update AbuseIPDB blacklist: '.$response->getBody());
             return;
         }
         $result = $response->getBody();
@@ -229,25 +241,25 @@ class IPBlacklistPlugin extends Plugin
     /**
      * Returns a reference to the database, creating and opening it if required
      */
-    function getDatabase(): SQLite3
+    public static function getDatabase(): SQLite3
     {
         // Return reference to database if already initialised
-        if (isset($this->db)) {
-            return $this->db;
+        if (isset(self::$db)) {
+            return self::$db;
         }
         // Get/create plugin data folder
-        $data_dir = $this->grav['locator']->findResource('user://data', true).'/ip-blacklist';
+        $data_dir = Grav::instance()['locator']->findResource('user://data', true).'/ip-blacklist';
         if (!file_exists($data_dir)) {
             Folder::create($data_dir);
         }
         // Get/create db and timestamps
-        $this->db = new SQLite3($data_dir.'/blacklists.sqlite');
-        $this->db->exec('CREATE TABLE IF NOT EXISTS "local" ("ip" TEXT NOT NULL UNIQUE, PRIMARY KEY("ip"))');
-        $this->db->exec('CREATE TABLE IF NOT EXISTS "abuseipdb" ("ip" TEXT NOT NULL UNIQUE, PRIMARY KEY("ip"))');
-        $this->db->exec('CREATE TABLE IF NOT EXISTS "updated" ("table" TEXT NOT NULL UNIQUE, "updated" INT NOT NULL DEFAULT 0, PRIMARY KEY("table"))');
-        $this->db->exec('INSERT OR IGNORE INTO "updated" ("table") VALUES ("local"),("abuseipdb")');
+        self::$db = new SQLite3($data_dir.'/blacklists.sqlite');
+        self::$db->exec('CREATE TABLE IF NOT EXISTS "local" ("ip" TEXT NOT NULL UNIQUE, PRIMARY KEY("ip"))');
+        self::$db->exec('CREATE TABLE IF NOT EXISTS "abuseipdb" ("ip" TEXT NOT NULL UNIQUE, PRIMARY KEY("ip"))');
+        self::$db->exec('CREATE TABLE IF NOT EXISTS "updated" ("table" TEXT NOT NULL UNIQUE, "updated" INT NOT NULL DEFAULT 0, PRIMARY KEY("table"))');
+        self::$db->exec('INSERT OR IGNORE INTO "updated" ("table") VALUES ("local"),("abuseipdb")');
 
-        return $this->db;
+        return self::$db;
     }
 
     /**

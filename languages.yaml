@@ -12,6 +12,8 @@ en:
     BLACKLIST_SOURCES_HELP: The blacklists used to check the IPs of incoming requests against
     BLACKLIST_SOURCES_LOCAL: Local
     BLACKLIST_SOURCES_ABUSEIPDB: AbuseIPDB
+    BLACKLISTING_ENABLE_AUTO_CACHE: Enable AbuseIPDB Auto-Cache
+    BLACKLISTING_ENABLE_AUTO_CACHE_HELP: Use the Grav Scheduler to refresh the AbuseIPDB blacklist in the background
     FILTERING: Filtering
     FILTERING_TEXT: 'When filtering is enabled incoming requests will have their <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs">URI</a> matched against the filters below. Matching (abusive) requests will have their IPs added to the local IP blacklist and, if reporting is enabled, will be reported to AbuseIPDB.</br></br><strong>Note</strong>: A free <a href="https://www.abuseipdb.com/account/api">AbuseIPDB API Key</a> and the <a href="https://www.abuseipdb.com/account/request-reporting-privilege">Reporting Privilege</a> are required to submit reports to AbuseIPDB. You can still filter incoming requests without these, but only the local IP blacklist will be updated with abusive IPs.'
     ENABLE_FILTERING: Enable filtering

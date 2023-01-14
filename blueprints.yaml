@@ -2,14 +2,13 @@ name: IP Blacklist
 slug: ip-blacklist
 type: plugin
 version: 0.1.0
-description: Detects and blocks abusive IPs, and allows fetching blacklists from and reporting IPs to AbuseIPDB.
+description: Detects abusive requests and blocks abusive IPs. Interfaces with AbuseIPDB for blacklisting and reporting.
 icon: filter
 author:
   name: Ari Cooper-Davis
   email: grav@cooper-davis.net
 homepage: https://github.com/aricooperdavis/grav-plugin-ip-blacklist
-demo: http://demo.yoursite.com
-keywords: grav, plugin, etc
+keywords: grav, plugin, security, blacklist, ip, abuseipdb
 bugs: https://github.com/aricooperdavis/grav-plugin-ip-blacklist/issues
 docs: https://github.com/aricooperdavis/grav-plugin-ip-blacklist/blob/develop/README.md
 license: MIT
@@ -63,6 +62,17 @@ form:
           options:
             local: PLUGIN_IP_BLACKLIST.BLACKLIST_SOURCES_LOCAL
             abuseipdb: PLUGIN_IP_BLACKLIST.BLACKLIST_SOURCES_ABUSEIPDB
+        enable_auto_cache:
+          type: toggle
+          label: PLUGIN_IP_BLACKLIST.BLACKLISTING_ENABLE_AUTO_CACHE
+          help: PLUGIN_IP_BLACKLIST.BLACKLISTING_ENABLE_AUTO_CACHE_HELP
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool
         response:
           type: select
           label: PLUGIN_IP_BLACKLIST.BLACKLIST_RESPONSE

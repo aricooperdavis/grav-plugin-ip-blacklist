@@ -4,10 +4,50 @@ enable_blacklisting: false
 sources:
   local: false
   abuseipdb: false
+enable_auto_cache: false
 response: '400'
 enable_reporting: false
 enable_filtering: false
 filters:
   -
-    pattern: '\?XDEBUG_SESSION_START=.*'
-    enabled: '0'
+    pattern: /\.aws/credentials
+    enabled: '1'
+  -
+    pattern: /\.env
+    enabled: '1'
+  -
+    pattern: '\?XDEBUG_SESSION_START='
+    enabled: '1'
+  -
+    pattern: /actuator/gateway/routes
+    enabled: '1'
+  -
+    pattern: /actuator/health
+    enabled: '1'
+  -
+    pattern: /alfacgiapi/perl\.alfa
+    enabled: '1'
+  -
+    pattern: '/autodiscover/autodiscover\.json\?@zdi/Powershell '
+    enabled: '1'
+  -
+    pattern: /Dockerrun\.aws\.json
+    enabled: '1'
+  -
+    pattern: /evox/about
+    enabled: '1'
+  -
+    pattern: /nmaplowercheck\d+
+    enabled: '1'
+  -
+    pattern: '/owa/auth/logon\.aspx\?'
+    enabled: '1'
+  -
+    pattern: /oam/server/opensso/sessionservice
+    enabled: '1'
+  -
+    pattern: /Portal/Portal\.mwsl
+    enabled: '1'
+  -
+    pattern: /scripts/WPnBr\.dll
+    enabled: '1'

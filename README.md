@@ -1,10 +1,14 @@
 # IP Blacklist Plugin
 
-The **IP Blacklist** Plugin is an extension for [Grav CMS](http://github.com/getgrav/grav). This plugin detects and blocks abusive IPs, and allows fetching blacklists from and reporting IPs to [AbuseIPDB](https://www.abuseipdb.com/).
+The **IP Blacklist** Plugin is an extension for [Grav CMS](http://github.com/getgrav/grav). This plugin detects abusive requests and blocks abusive IPs. Additionally, it interfaces with [AbuseIPDB](https://www.abuseipdb.com/) for blacklisting and reporting.
+
+> This plugin operates only within Grav, and is not a suitable replacement for a server firewall. It _may_ help reduce the impact of malicious bots on your site performance and bandwidth use, but it can only do so much. I'm not a security expert, so please don't take my word for anything.
+
+---
 
 ## Installation
 
-Installing the IP Blacklist plugin can be done in one of three ways: The admin method lets you quickly install the plugin via the Admin Plugin, The GPM (Grav Package Manager) installation method lets you do so with a simple terminal command, the manual method lets you do so via a zip file.
+Installing the IP Blacklist plugin can be done in one of three ways: The admin method lets you quickly install the plugin via the Admin Plugin, The GPM (Grav Package Manager) installation method lets you do so with a simple terminal command, and the manual method lets you do so via a zip file.
 
 ### Admin Plugin (Preferred)
 
@@ -28,6 +32,8 @@ You should now have all the plugin files under
 	
 > NOTE: This plugin is a modular component for Grav which may require other plugins to operate, please see its [blueprints.yaml-file on GitHub](https://github.com/aricooperdavis/grav-plugin-ip-blacklist/blob/master/blueprints.yaml).
 
+---
+
 ## Configuration
 
 Before configuring this plugin, you should copy the `user/plugins/ip-blacklist/ip-blacklist.yaml` to `user/config/plugins/ip-blacklist.yaml` and only edit that copy.
@@ -35,38 +41,54 @@ Before configuring this plugin, you should copy the `user/plugins/ip-blacklist/i
 Here is the default configuration and an explanation of available options:
 
 ```yaml
-enabled: true # Enable the overall plugin
-abuseipdb_key: null # Your AbuseIPDB API key, required for fetching the AbuseIPDB blacklist or reporting abusive IPs to AbuseIPDB
-enable_blacklisting: false # Whether to block IPs that appear on the blacklist
-sources: # Which blacklists to search incoming IPs for
-  local: false # The local blacklist updated by filtering (see below)
-  abuseipdb: false # The AbuseIPDB blacklist (API Key required, see above)
-response: '400' # The HTTP response code to return to blacklisted requests (options: 400, 403, 418, 503)
-enable_reporting: false # Whether to report abusive IPs to AbuseIPDB (API Key required, see above)
-enable_filtering: false # Whether to filter incoming requests in order to detect abuse and add the abusive IPs to the local blacklist. Overrides individual filter `enabled` attribute.
-filters: # An array of regex patterns against which incoming request URIs are matched to detect abusive behaviour
+enabled: true
+# Enable the overall plugin
+abuseipdb_key: null
+# Your AbuseIPDB API key, required for fetching the AbuseIPDB blacklist or reporting abusive IPs to AbuseIPDB
+enable_blacklisting: false
+# Whether to block IPs that appear on the blacklist
+sources:
+# Which blacklists to search incoming IPs for
+  local: false
+  # The local blacklist updated by filtering (see below)
+  abuseipdb: false
+  # The AbuseIPDB blacklist (API Key required, see above)
+enable_auto_cache: false
+# Whether to use the Grav Scheduler to cache the AbuseIPDB in the background (recommended)
+response: '400'
+# The HTTP response code to return to blacklisted requests (options: 400, 403, 418, 503)
+enable_reporting: false
+# Whether to report abusive IPs to AbuseIPDB (API Key required, see above)
+enable_filtering: false
+# Whether to filter incoming requests in order to detect abuse and add the abusive IPs to the local blacklist. Overrides individual filter `enabled` attribute.
+filters:
+# An array of regex patterns against which incoming request URIs are matched to detect abusive behaviour
   -
-    pattern: '\?XDEBUG_SESSION_START=.*' # The regex pattern (regex special characters must be escaped)
-    enabled: '0' # Whether this filter is enabled
+    pattern: '/\.env'
+    # The regex pattern (regex special characters must be escaped)
+    enabled: '0'
+    # Whether this filter is enabled
+  -
+    [...]
 ```
 
 Note that if you use the Admin Plugin, a file with your configuration named ip-blacklist.yaml will be saved in the `user/config/plugins/`-folder once the configuration is saved in the Admin.
 
+---
+
 ## Usage
 
-This plugin has 2 main features that go hand in hand:
+This plugin has 2 main features that go hand in hand (but may be used independently):
 
 * __Blacklisting__ (blocking) abusive IPs from your site
 * __Filtering__ incoming requests to detect abusive ones
 
-You do not have to use both of these tools together, and could choose to only filter or only blacklist if you wish.
-
 Both of these features integrate well with the Freemium [AbuseIPDB](https://www.abuseipdb.com) service; you can use their list of abusive IPs for blacklisting, or report abusive IPs detected by your filtering to their database.
 
 ### Blacklisting
-Blacklisting works by checking the IP from which a request to your site originates against a list of known abusive IPs. If the IP is found on a blacklist then a plain HTTP response code is sent, and no further Grav processing occurs, saving you valuable server resources.
+Blacklisting works by checking the IP from which a request to your site originates against a list of known abusive IPs. If the IP is found on a blacklist then a plain HTTP response code is sent in return, and no further Grav processing occurs, saving you valuable server resources.
 
-You can customise the response code sent to blacklisted IPs in the plugin configuration. The options available to you are:
+You can customise the response code sent to blacklisted IPs in the plugin configuration. The response codes available to you are:
 
 | __Response Code__ | __Response Message__ |
 | :- | :- |
@@ -77,7 +99,9 @@ You can customise the response code sent to blacklisted IPs in the plugin config
 
 You can choose to use a local blacklist, or the AbuseIPDB blacklist, or both.
 
-__Note:__ Fetching the AbuseIPDB blacklist requires a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api).
+__Note:__ Using the AbuseIPDB blacklist requires a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api).
+
+If you choose to use the AbuseIPDB blacklist then we recommend enabling the `Enable AbuseIPDB Auto-Cache` option in the plugin configuration to cache the AbuseIPDB blacklist in the background using the Grav Scheduler. This will prevent the first site visitor of the day having to wait for Grav to cache the AbuseIPDB blacklist before the page loads.
 
 If you choose to use a local blacklist then you will need to add IPs to it yourself. This is easy if you enable the Filtering feature, which detects abusive requests to your site and adds the responsible IPs to your local blacklist.
 
@@ -92,7 +116,9 @@ Once an abusive request has been identified, the IP is recorded and added to the
 
 __Note:__ Reporting abusive IPs to AbuseIPDB requires _both_ a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api) _and_ the elevated [Reporting Privilege](https://www.abuseipdb.com/account/request-reporting-privilege).
 
-### FAQs
+---
+
+## FAQs
 __Q: Does IP blacklisting work if my site uses Cloudflare?__
 
 A: Yes, when Cloudflare passes on a request to your server it passes the IP on to your server in the request headers. If these headers are present we check them against the blacklist rather than the apparent IP of the request (which would be Cloudflare's own servers).
@@ -101,11 +127,9 @@ Note that Cloudflare may choose to serve a cached copy of your website to a blac
 
 __Q: When I use the AbuseIPDB blacklist my site sometimes takes forever to load!__
 
-A: To keep your site loading quickly we cache as much of the AbuseIPDB blacklist as their API allows, and refresh this cache every 24 hours. If we haven't cached it yet, or the cache is out of date, then it may take a few seconds to fetch it from the AbuseIPDB servers when your site recieves a request. This should only ever happen once every 24 hours.
+A: Enable the Grav Scheduler `AbuseIPDB Cache` task, which will cache the AbuseIPDB blacklist in the background.
 
-We are in the process of developing a Grav Scheduler task that automates this cache update in the background so that your visitors never experience any delay.
-
-<!-- If you want to avoid this then you can enable the Grav Scheduler `AbuseIPDB Cache` task, which will refresh this cache in the background using CRON so that it doesn't impact on your visitors! -->
+Why is this needed? To keep your site loading quickly we cache as much of the AbuseIPDB blacklist as their API allows, and refresh this cache every 24 hours. If your site receives a request and the blacklist hasn't been cached yet, or the cache is out of date, then it may take a few seconds to fetch it from the AbuseIPDB servers.
 
 __Q: Some IPs that are listed on AbuseIPDB are not being blacklisted!__
 
@@ -138,15 +162,17 @@ A: We try to ensure that the default filters shipped with the plugin cover a dec
 
 You can disable, delete, and add new filters in the plugin configuration. Be careful doing this - they're regex patterns and matching is performed against the entire URI, so you'll need to escape any regex symbols i.e. `?` should be `\?` and `.co.uk` should be `\.co\.uk`.
 
+---
+
 ## To Do
 
 If you would like to help us develop this plugin then please consider starting with some of these projects that we've got on the go:
 
+- [ ] Add lots more default filters!
 - [ ] Implement local blacklist expiry and size limit.
-- [ ] Add a Grav Scheduler task for cacheing AbuseIPDB blacklists in the background.
 - [ ] Add admin plugin GUI for interacting with local blacklist.
 - [ ] Disable reporting and AbuseIPDB blacklisting in the event of an unauthorised API request, to prevent repeated failures against the AbuseIPDB API.
-- [ ] Allow cached AbuseIPDB blacklists to be customised based on query parameters to the `blacklist` API endpoit (`exceptCountries`, `limit`, and `confidenceMinimum`).
+- [ ] Allow cached AbuseIPDB blacklists to be customised based on query parameters to the `blacklist` API endpoint (`exceptCountries`, `limit`, and `confidenceMinimum`).
 - [ ] Implement a buffer that the IPs of non-blacklisted requests are added to so that they may be checked retrospectively against the AbuseIPDB `check` API endpoint and added to the local blacklist if found to be abusive.
 - [ ] Add some graphics to the README.md to illustrate the plugins operation better than walls of text.
 - [ ] Translations.
