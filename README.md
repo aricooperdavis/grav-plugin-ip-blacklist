@@ -121,7 +121,7 @@ __Note:__ Reporting abusive IPs to AbuseIPDB requires _both_ a free [AbuseIPDB A
 ## FAQs
 __Q: Does IP blacklisting work if my site uses Cloudflare?__
 
-A: Yes, when Cloudflare passes on a request to your server it passes the IP on to your server in the request headers. If these headers are present we check them against the blacklist rather than the apparent IP of the request (which would be Cloudflare's own servers).
+A: Yes, when Cloudflare passes on a request to your server it adds the originating IP to the request headers. If these headers are present we check use these to check against the blacklist rather than the apparent IP of the request (which would be Cloudflare's own servers).
 
 Note that Cloudflare may choose to serve a cached copy of your website to a blacklisted IP, and this cannot be prevented, but it will have no negative impact on your server.
 
@@ -138,6 +138,8 @@ A: The AbuseIPDB API only allows us to fetch a blacklisting containing the IPs t
 | __Standard__ | __Basic Subscription__ | __Premium Subscription__ |
 | :- | :- | :- |
 | 10,000 | 100,000 | 500,000 |
+
+For the time being you may add abusive IPs to your local database manually, but we're working on a feature that allows IPs that aren't blacklisted to be checked retrospectively against the AbuseIPDB API `check` endpoint and added to our local blacklist if they're known to be abusive by AbuseIPDB - stay tuned!
 
 <!-- You may wish to enable the `Check individual IPs` option in the plugin configuration. This checks non-blacklisted IPs individually against the AbuseIPDB API after the request has happened. If the IP is found to be blacklisted on AbuseIPDB then it is added to your local blacklist so that future requests can be intercepted.
 
@@ -162,6 +164,11 @@ A: We try to ensure that the default filters shipped with the plugin cover a dec
 
 You can disable, delete, and add new filters in the plugin configuration. Be careful doing this - they're regex patterns and matching is performed against the entire URI, so you'll need to escape any regex symbols i.e. `?` should be `\?` and `.co.uk` should be `\.co\.uk`.
 
+__Q: Help, I was testing the filters and have blacklisted my own IP!__
+
+A: You silly goose! You'll have to remove your IP from the `local` table in the `/user/data/ip-blacklist/blacklists.sqlite` database file. Your IP is only blacklisted from your site, not your server, so you'll be able to log-in and make this change using ssh, SFTP, or cPanel.
+
+If you aren't comfortable with manipulating the database then you can just delete the whole file and it'll be re-created (empty!) when needed.
 ---
 
 ## To Do
