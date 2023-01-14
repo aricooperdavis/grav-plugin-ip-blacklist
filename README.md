@@ -169,6 +169,7 @@ __Q: Help, I was testing the filters and have blacklisted my own IP!__
 A: You silly goose! You'll have to remove your IP from the `local` table in the `/user/data/ip-blacklist/blacklists.sqlite` database file. Your IP is only blacklisted from your site, not your server, so you'll be able to log-in and make this change using ssh, SFTP, or cPanel.
 
 If you aren't comfortable with manipulating the database then you can just delete the whole file and it'll be re-created (empty!) when needed.
+
 ---
 
 ## To Do
