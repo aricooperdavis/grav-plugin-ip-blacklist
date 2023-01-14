@@ -4,6 +4,8 @@ The **IP Blacklist** Plugin is an extension for [Grav CMS](http://github.com/get
 
 > This plugin operates only within Grav, and is not a suitable replacement for a server firewall. It _may_ help reduce the impact of malicious bots on your site performance and bandwidth use, but it can only do so much. I'm not a security expert, so please don't take my word for anything.
 
+Already familiar with Grav plugins? [__Skip to Usage__](#usage)!
+
 ---
 
 ## Installation
