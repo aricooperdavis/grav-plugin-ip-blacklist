@@ -25,16 +25,25 @@ filters:
     pattern: /actuator/health
     enabled: '1'
   -
+    pattern: /administrator/index\.php
+    enabled: '1'
+  -
     pattern: /alfacgiapi/perl\.alfa
     enabled: '1'
   -
     pattern: '/autodiscover/autodiscover\.json\?@zdi/Powershell '
     enabled: '1'
   -
+    pattern: /data/admin/allowurl\.txt
+    enabled: '1'
+  -
     pattern: /Dockerrun\.aws\.json
     enabled: '1'
   -
     pattern: /evox/about
+    enabled: '1'
+  -
+    pattern: '/mifs/\.;/services/LogService '
     enabled: '1'
   -
     pattern: /nmaplowercheck\d+
@@ -49,5 +58,14 @@ filters:
     pattern: /Portal/Portal\.mwsl
     enabled: '1'
   -
+    pattern: /Public/home/js/check\.js
+    enabled: '1'
+  -
     pattern: /scripts/WPnBr\.dll
+    enabled: '1'
+  -
+    pattern: /xmlrpc\.php
+    enabled: '1'
+  -
+    pattern: /xxxss
     enabled: '1'

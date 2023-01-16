@@ -3,7 +3,7 @@ slug: ip-blacklist
 type: plugin
 version: 0.1.0
 description: Detects abusive requests and blocks abusive IPs. Interfaces with AbuseIPDB for blacklisting and reporting.
-icon: filter
+icon: ban
 author:
   name: Ari Cooper-Davis
   email: grav@cooper-davis.net
