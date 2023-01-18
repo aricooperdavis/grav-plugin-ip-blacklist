@@ -107,9 +107,7 @@ If you choose to use the AbuseIPDB blacklist then we recommend enabling the `Ena
 
 If you choose to use a local blacklist then you will need to add IPs to it yourself. This is easy if you enable the Filtering feature, which detects abusive requests to your site and adds the responsible IPs to your local blacklist.
 
-You could also add IPs to your local blacklist directly by adding them to the `local` table of the `/user/data/ip-blacklist/blacklists.sqlite` database. We are in the process of developing a more user-friendly way of inspecting and manipulating your local blacklist - stay tuned!
-
-<!-- You can also add IPs to your local blacklist using the IP Blacklist page in the Admin plugin. This is a nice graphical interface for the `local` table of the `/user/data/ip-blacklist/blacklists.sqlite` database. -->
+You can also add IPs to your local blacklist using the IP Blacklist page in the Admin plugin. This is a nice graphical interface for the `local` table of the `/user/data/ip-blacklist/blacklists.sqlite` database.
 
 ### Filtering
 Filtering works by matching the [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs) of incoming requests to your site against known abusive requests. This is done using regex pattern matching, and this plugin comes by default with a number of regex patterns to match known exploits.
@@ -156,9 +154,7 @@ __Q: Some IPs are getting blacklisted that are not abusive!__
 
 A: We have no control over the AbuseIPDB blacklist, so if you believe that an IP has been added to it by mistake then you must request that it is taken down directly with AbuseIPDB (for which a free account is required).
 
-If the IP being blocked appears in your local blacklist then you will need to remove it from the `local` table in the `/user/data/ip-blacklist/blacklists.sqlite` database. We are in the process of developing a more user-friendly way of inspecting and manipulating your local blacklist - stay tuned!
-
-<!-- If you are using the local blacklist then you can remove the IP from your blacklist in the IP Blacklist section of the Admin plugin. This is a nice graphical interface for the `local` table of the `/user/data/ip-blacklist/blacklists.sqlite` database. -->
+If you are using the local blacklist then you can remove the IP from your blacklist in the IP Blacklist section of the Admin plugin. This is a nice graphical interface for the `local` table of the `/user/data/ip-blacklist/blacklists.sqlite` database.
 
 __Q: Some of the filters are catching legitimate requests, whilst some abusive requests aren't being filtered at all!__
 
@@ -168,7 +164,7 @@ You can disable, delete, and add new filters in the plugin configuration. Be car
 
 __Q: Help, I was testing the filters and have blacklisted my own IP!__
 
-A: You silly goose! You'll have to remove your IP from the `local` table in the `/user/data/ip-blacklist/blacklists.sqlite` database file. Your IP is only blacklisted from your site, not your server, so you'll be able to log-in and make this change using ssh, SFTP, or cPanel.
+A: You silly goose! You'll have to remove your IP from the `local` table in the `/user/data/ip-blacklist/blacklists.sqlite` database file, because you will be locked out of the Admin plugin. Your IP is only blacklisted from your site, not your server, so you'll be able to log-in and make this change using ssh, SFTP, or cPanel.
 
 If you aren't comfortable with manipulating the database then you can just delete the whole file and it'll be re-created (empty!) when needed.
 
@@ -179,8 +175,8 @@ If you aren't comfortable with manipulating the database then you can just delet
 If you would like to help us develop this plugin then please consider starting with some of these projects that we've got on the go:
 
 - [ ] Add lots more default filters!
+- [ ] Add a "stats" section to the Admin interface to give details of the local blacklist e.g. size on disk, number of IPs stored etc.
 - [ ] Implement local blacklist expiry and size limit.
-- [ ] Add admin plugin GUI for interacting with local blacklist.
 - [ ] Disable reporting and AbuseIPDB blacklisting in the event of an unauthorised API request, to prevent repeated failures against the AbuseIPDB API.
 - [ ] Allow cached AbuseIPDB blacklists to be customised based on query parameters to the `blacklist` API endpoint (`exceptCountries`, `limit`, and `confidenceMinimum`).
 - [ ] Implement a buffer that the IPs of non-blacklisted requests are added to so that they may be checked retrospectively against the AbuseIPDB `check` API endpoint and added to the local blacklist if found to be abusive.

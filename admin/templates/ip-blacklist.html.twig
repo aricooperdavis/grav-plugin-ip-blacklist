@@ -1,0 +1,50 @@
+{% extends 'partials/base.html.twig' %}
+
+{% if admin.route %}
+    {% set context = admin.page(true) %}
+{% endif %}
+
+{% block titlebar %}
+    <h1><i class="fa fa-fw fa-ban"></i> IP Blacklist</h1>
+{% endblock %}
+
+{% block stylesheets %}
+    {% do assets.addCss('plugins://ip-blacklist/admin/resources/style.css') %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {% do assets.addJs('plugins://ip-blacklist/admin/resources/script.js') %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div id="search">
+        <h5>Search</h5>
+        <label for="search-box">Enter an IP Address (e.g. 127.0.0.1):</label>
+        <input type="text" id="search-box" name="search-box" />
+        <a id="search" class="button">Search</a>
+        <div class="grav-loader">Loading…</div>
+        <div class="results">
+            <p class="notices green"><span id="ip">IP address</span> <strong id="status">not found in</strong> local blacklist.</p>
+            <a id="add" class="button">Add to Blacklist</a>
+            <a id="remove" class="button">Remove from Blacklist</a>
+        </div>
+    <hr />
+    </div>
+
+    <div id="last-25">
+        <h5>Recent additions</h5>
+        <label>List of the 25 IP addresses most-recently added to the local blacklist:</label>
+        <div class="grav-loader">Loading…</div>
+        <div class="results">
+            {# Populated client-side following AJAX #}
+        </div>
+        <a id="last-25" class="button">Refresh</a>
+    </div>
+
+    <div id="link-to-plugin">
+        <h5>Plugin configuration</h5>
+        <label>To make changes to the plugin configuration, including editing your filters, head to the <a href="plugins/ip-blacklist">plugin configuration</a>.</label>
+    </div>
+{% endblock %}

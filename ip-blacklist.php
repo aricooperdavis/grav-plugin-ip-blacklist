@@ -61,16 +61,86 @@ class IPBlacklistPlugin extends Plugin
             'onRequestHandlerInit' => ['onRequestHandlerInit', 0],
             'onSchedulerInitialized' => ['onSchedulerInitialized', 0],
         ]);
+
+        // Only load admin pages if required
+        if (!$this->isAdmin() || !$this->grav['user']->authenticated) {
+            return;
+        }
+
+        $this->enable([
+            'onAdminMenu' => ['onAdminMenu', 0],
+            'onAdminTwigTemplatePaths' => ['onAdminTwigTemplatePaths', 0],
+        ]);
+
         return;
     }
 
     /**
-     * Intercept requests before they become too taxing
+     * Handle admin page requests, and filter requests if desired
      */
     public function onRequestHandlerInit($request, $handler)
     {
+        // Handle admin page requests
+        $path = $request->getRoute()->getRoute();
+
+        if (
+            $this->isAdmin()
+            && $this->grav['user']->authenticated
+            && $path == '/admin/ip-blacklist/data'
+        ) {
+            $body = (array) $request->getRequest()->getParsedBody();
+            if (!isset($body['action'])) {
+                $response = new Response(400, [], json_encode(['Error' => 'No action']));
+                $request->setResponse($response);
+                return;
+            }
+
+            $db = $this->getDatabase();
+            $data = [];
+
+            // Make appropriate DB query
+            switch ($body['action']) {
+                case 'last-25':
+                    $stmt = $db->prepare('SELECT ("ip") FROM "local" ORDER BY "rowid" DESC LIMIT 25');
+                    $result = $stmt->execute();
+                    while ($row = $result->fetchArray(SQLITE3_NUM)) {
+                        array_push($data, $row[0]);
+                    }
+                    break;
+
+                case 'search':
+                    $stmt = $db->prepare('SELECT ("ip") FROM "local" WHERE "ip"=:ip LIMIT 1');
+                    $stmt->bindValue(':ip', $body['ip'], SQLITE3_TEXT);
+                    $result = $stmt->execute();
+                    $data = (int)$result->fetchArray(SQLITE3_NUM);
+                    break;
+
+                case 'add':
+                    $stmt = $db->prepare('INSERT INTO "local" ("ip") VALUES (:ip)');
+                    $stmt->bindValue(':ip', $body['ip'], SQLITE3_TEXT);
+                    $data = (int)(bool)$stmt->execute();
+                    break;
+
+                case 'remove':
+                    $stmt = $db->prepare('DELETE FROM "local" WHERE ("ip" = :ip)');
+                    $stmt->bindValue(':ip', $body['ip'], SQLITE3_TEXT);
+                    $data = (int)(bool)$stmt->execute();
+                    break;
+
+                default:
+                    $response = new Response(400, [], json_encode(['Error' => 'Invalid action']));
+                    $request->setResponse($response);
+                    return;
+            }
+
+            // Parse results and send response
+            $response = new Response(200, [], json_encode($data));
+            $request->setResponse($response);
+            return;
+        }
+
+        // Filter incoming requests
         $config = $this->config();
-        // Only continue processing if we're filtering incoming requests
         if (!$config['enable_filtering'] && !$config['enable_blacklisting']) {
             return;
         }
@@ -86,7 +156,6 @@ class IPBlacklistPlugin extends Plugin
 
         // Filtering
         if ($config['enable_filtering']) {
-            $path = $request->getRoute()->getRoute();
             $uri = $this->grav['uri'];
             foreach ($config['filters'] as $filter) {
                 // Found abusive request
@@ -120,12 +189,40 @@ class IPBlacklistPlugin extends Plugin
     }
 
     /**
+     * Add page to admin plugin menu
+     */
+    public function onAdminMenu()
+    {
+        $options = [
+            'hint' => 'IP Blacklist',
+            'route' => 'ip-blacklist',
+            'icon' => 'fa-ban',
+            'authorize' => 'admin.users',
+        ];
+        $this->grav['twig']->plugins_hooked_nav['IP Blacklist'] = $options;
+    }
+
+    /**
+     * Add admin page resources to admin twig templates
+     */
+    public function onAdminTwigTemplatePaths($event)
+    {
+        if (in_array($this->grav['uri']->route(), ['/admin/ip-blacklist'])) {
+            $event['paths'] = array_merge(
+                $event['paths'],
+                [__DIR__.'/admin/templates']
+            );
+        }
+        return $event;
+    }
+
+    /**
      * Add an IP to the local blacklist
      */
     public function addIpToBlacklist(string $ip)
     {
         $db = $this->getDatabase();
-        $stmt = $db->prepare('INSERT OR IGNORE INTO local(ip) VALUES(:ip)');
+        $stmt = $db->prepare('INSERT OR IGNORE INTO "local" ("ip") VALUES (:ip)');
         $stmt->bindValue(':ip', $ip);
         $stmt->execute();
     }
@@ -223,7 +320,7 @@ class IPBlacklistPlugin extends Plugin
             'form_params' => [
                 'ip' => $ip,
                 'categories' => '21',
-                'comment' => 'Attempt to access path: '.$path,
+                'comment' => 'Probe for vulnerabilities. Path attempted: '.$path,
             ],
             'headers' => [
                 'Accept' => 'application/json',

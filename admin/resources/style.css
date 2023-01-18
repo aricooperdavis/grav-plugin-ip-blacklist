@@ -1,0 +1,46 @@
+#admin-main div.admin-block {
+    padding: 1rem;
+}
+
+/* Elements */
+#search input {
+    margin: 0.5rem 0rem;
+}
+
+#search p {
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+#search .grav-loader {
+    margin: 2rem;
+    display: none;
+}
+
+#search .results {
+    display: none;
+}
+
+.button.disabled {
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+#results #status {
+    text-decoration: underline;
+}
+
+#last-25 .grav-loader {
+    margin: 2rem;
+}
+
+#last-25 .results {
+    margin: 0 0.5rem 0.5rem 0.5rem;
+    -webkit-columns: 5 100px;
+    -moz-columns: 5 100px;
+    columns: 5 100px;
+}
+
+#last-25 .results .ip {
+    margin: 0;
+}
