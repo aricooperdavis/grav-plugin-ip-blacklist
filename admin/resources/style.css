@@ -17,6 +17,10 @@
     display: none;
 }
 
+.results {
+    margin: 1rem;
+}
+
 #search .results {
     display: none;
 }
@@ -30,12 +34,19 @@
     text-decoration: underline;
 }
 
-#last-25 .grav-loader {
+#stats .stat {
+    text-decoration: underline;
+}
+
+#stats p {
+    margin: 0;
+}
+
+#last-25 .grav-loader, #stats .grav-loader {
     margin: 2rem;
 }
 
 #last-25 .results {
-    margin: 0 0.5rem 0.5rem 0.5rem;
     -webkit-columns: 5 100px;
     -moz-columns: 5 100px;
     columns: 5 100px;

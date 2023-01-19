@@ -95,17 +95,27 @@ class IPBlacklistPlugin extends Plugin
                 return;
             }
 
-            $db = $this->getDatabase();
-            $data = [];
-
             // Make appropriate DB query
+            $db = $this->getDatabase();
             switch ($body['action']) {
                 case 'last-25':
                     $stmt = $db->prepare('SELECT ("ip") FROM "local" ORDER BY "rowid" DESC LIMIT 25');
                     $result = $stmt->execute();
+                    $data = [];
                     while ($row = $result->fetchArray(SQLITE3_NUM)) {
                         array_push($data, $row[0]);
                     }
+                    break;
+
+                case 'stats':
+                    $stmt = $db->prepare('SELECT COUNT(1) FROM "local"');
+                    $result = $stmt->execute();
+                    $data = [
+                        "Number of IPs" => $result->fetchArray(SQLITE3_NUM)[0],
+                        "Size on Disk" => $this->human_filesize(filesize(
+                                $this->grav['locator']->findResource('user://data/ip-blacklist/blacklists.sqlite', true)
+                            )),
+                    ];
                     break;
 
                 case 'search':
@@ -397,6 +407,12 @@ class IPBlacklistPlugin extends Plugin
             $ip = $remote;
         }
         return $ip;
+    }
+
+    function human_filesize($bytes, $decimals = 0) {
+        $sz = 'BKMGTP';
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
 
 }

@@ -186,7 +186,6 @@ If you aren't comfortable with manipulating the database then you can just delet
 If you would like to help us develop this plugin then please consider starting with some of these projects that we've got on the go:
 
 - [ ] Add lots more default filters!
-- [ ] Add a "stats" section to the Admin interface to give details of the local blacklist e.g. size on disk, number of IPs stored etc.
 - [ ] Implement local blacklist expiry and size limit.
 - [ ] Disable reporting and AbuseIPDB blacklisting in the event of an unauthorised API request, to prevent repeated failures against the AbuseIPDB API.
 - [ ] Allow cached AbuseIPDB blacklists to be customised based on query parameters to the `blacklist` API endpoint (`exceptCountries`, `limit`, and `confidenceMinimum`).

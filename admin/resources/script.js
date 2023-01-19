@@ -8,8 +8,9 @@ addEventListener('DOMContentLoaded', (event) => {
         });
     });
 
-    // Preload last-25
+    // On-load AJAXs
     processInput('last-25');
+    processInput('stats');
 });
 
 // Send AJAX requests to backend
@@ -40,6 +41,12 @@ function processInput(id) {
             case 'last-25':
                 block.innerHTML = response.map(ip => {
                     return `<p class="ip">&bull; <a href="https://www.abuseipdb.com/check/${ip}" target="_blank">${ip}</a></p>`;
+                }).join('');
+                break;
+
+            case 'stats':
+                block.innerHTML = Object.entries(response).map(([key, value]) => {
+                    return `<p><span class="stat">${key}</span>: ${value}</p>`;
                 }).join('');
                 break;
 
