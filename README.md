@@ -104,7 +104,7 @@ You can customise the response code sent to blacklisted IPs in the plugin config
 
 You can choose to use a local blacklist, or the AbuseIPDB blacklist, or both.
 
-__Note:__ Using the AbuseIPDB blacklist requires a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api).
+> __Note:__ Using the AbuseIPDB blacklist requires a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api).
 
 If you choose to use the AbuseIPDB blacklist then we recommend enabling the `Enable AbuseIPDB Auto-Cache` option in the plugin configuration to cache the AbuseIPDB blacklist in the background using the Grav Scheduler. This will prevent the first site visitor of the day having to wait for Grav to cache the AbuseIPDB blacklist before the page loads.
 
@@ -121,7 +121,7 @@ Filtering works by matching the [URI](https://en.wikipedia.org/wiki/Uniform_Reso
 
 Once an abusive request has been identified, the IP is recorded and added to the local blacklist. You may also choose for these abusive IPs to automatically be reported to AbuseIPDB.
 
-__Note:__ Reporting abusive IPs to AbuseIPDB requires _both_ a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api) _and_ the elevated [Reporting Privilege](https://www.abuseipdb.com/account/request-reporting-privilege).
+> __Note:__ Reporting abusive IPs to AbuseIPDB requires _both_ a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api) _and_ the elevated [Reporting Privilege](https://www.abuseipdb.com/account/request-reporting-privilege).
 
 You can customise and extend the filters used to identify abusive requests via the plugin configuration.
 
@@ -191,5 +191,4 @@ If you would like to help us develop this plugin then please consider starting w
 - [ ] Disable reporting and AbuseIPDB blacklisting in the event of an unauthorised API request, to prevent repeated failures against the AbuseIPDB API.
 - [ ] Allow cached AbuseIPDB blacklists to be customised based on query parameters to the `blacklist` API endpoint (`exceptCountries`, `limit`, and `confidenceMinimum`).
 - [ ] Implement a buffer that the IPs of non-blacklisted requests are added to so that they may be checked retrospectively against the AbuseIPDB `check` API endpoint and added to the local blacklist if found to be abusive.
-- [ ] Add some graphics to the README.md to illustrate the plugins operation better than walls of text.
 - [ ] Translations.
