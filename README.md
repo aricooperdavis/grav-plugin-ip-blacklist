@@ -136,7 +136,7 @@ A: Yes, when Cloudflare passes on a request to your server it adds the originati
 
 Note that Cloudflare may choose to serve a cached copy of your website to a blacklisted IP, and this cannot be prevented, but it will have no negative impact on your server.
 
-__Q: When I use the AbuseIPDB blacklist my site sometimes takes forever to load!__
+__Q: When I use the AbuseIPDB blacklist my site sometimes takes ages to load!__
 
 A: Enable the Grav Scheduler `AbuseIPDB Cache` task, which will cache the AbuseIPDB blacklist in the background.
 
