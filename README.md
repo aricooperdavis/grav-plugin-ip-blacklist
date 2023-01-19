@@ -88,7 +88,10 @@ This plugin has 2 main features that go hand in hand (but may be used independen
 Both of these features integrate well with the Freemium [AbuseIPDB](https://www.abuseipdb.com) service; you can use their list of abusive IPs for blacklisting, or report abusive IPs detected by your filtering to their database.
 
 ### Blacklisting
+
 Blacklisting works by checking the IP from which a request to your site originates against a list of known abusive IPs. If the IP is found on a blacklist then a plain HTTP response code is sent in return, and no further Grav processing occurs, saving you valuable server resources.
+
+![A diagram illustrating that visitors to your site from blacklisted IP addresses are sent an error response and your site does not process the request.](./resources/blacklisting.svg "Visitors to your site from blacklisted IP addresses are sent an error response and your site does not process the request.")
 
 You can customise the response code sent to blacklisted IPs in the plugin configuration. The response codes available to you are:
 
@@ -111,6 +114,8 @@ You can also add IPs to your local blacklist using the IP Blacklist page in the 
 
 ### Filtering
 Filtering works by matching the [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs) of incoming requests to your site against known abusive requests. This is done using regex pattern matching, and this plugin comes by default with a number of regex patterns to match known exploits.
+
+![A diagram illustrating that requests for paths that are known to be abusive are caught and the IP responsible is added to your blacklist.](./resources/filtering.svg "Requests for paths that are known to be abusive are caught and the IP responsible is added to your blacklist.")
 
 Once an abusive request has been identified, the IP is recorded and added to the local blacklist. You may also choose for these abusive IPs to automatically be reported to AbuseIPDB.
 
