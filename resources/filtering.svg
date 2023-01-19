@@ -26,9 +26,9 @@
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="0.696647"
-     inkscape:cx="372.49855"
-     inkscape:cy="264.12229"
+     inkscape:zoom="0.98520764"
+     inkscape:cx="485.68442"
+     inkscape:cy="63.945911"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -507,14 +507,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-       x="98.84951"
+       x="99.21125"
        y="9.0204287"
        id="text3481"><tspan
          sodipodi:role="line"
          id="tspan3479"
          style="font-size:5.29167px;fill:#ff0000;fill-opacity:1;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-         x="98.84951"
-         y="9.0204287">Blacklist</tspan></text>
+         x="99.21125"
+         y="9.0204287">Filtering</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -544,12 +544,12 @@
          style="font-size:2.46944px;text-align:center;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
          x="110.05064"
          y="16.876196"
-         id="tspan3493">The hacker's IP address</tspan><tspan
+         id="tspan15999">The request matches a</tspan><tspan
          sodipodi:role="line"
          style="font-size:2.46944px;text-align:center;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
          x="110.05064"
          y="19.962996"
-         id="tspan15999">is added to a blacklist</tspan></text>
+         id="tspan4277">known exploit filter</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.46944px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
@@ -660,14 +660,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-       x="156.01863"
-       y="8.847312"
+       x="150.23474"
+       y="9.0204287"
        id="text24751"><tspan
          sodipodi:role="line"
          id="tspan24749"
          style="font-size:5.29167px;fill:#ff0000;fill-opacity:1;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-         x="156.01863"
-         y="8.847312">Report</tspan></text>
+         x="150.23474"
+         y="9.0204287">Blacklist IP</tspan></text>
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
        d="m 150,12.5 h 30"
@@ -675,19 +675,19 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.46944px;line-height:1.25;font-family:sans-serif;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-       x="165.03497"
-       y="16.888252"
+       x="165.43408"
+       y="16.876196"
        id="text24759"><tspan
          sodipodi:role="line"
          style="font-size:2.46944px;text-align:center;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-         x="165.03497"
-         y="16.888252"
-         id="tspan43513">A report of the event is</tspan><tspan
+         x="165.43408"
+         y="16.876196"
+         id="tspan10291">The hacker's IP address </tspan><tspan
          sodipodi:role="line"
          style="font-size:2.46944px;text-align:center;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
-         x="165.03497"
-         y="19.975052"
-         id="tspan45809">sent to AbuseIPDB</tspan></text>
+         x="165.43408"
+         y="19.962996"
+         id="tspan11423">is added to a blacklist</tspan></text>
     <path
        style="fill:none;stroke:#ff0000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
        d="m 150,12.5 h 30"
