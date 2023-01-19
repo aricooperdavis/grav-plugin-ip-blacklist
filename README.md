@@ -112,6 +112,8 @@ If you choose to use a local blacklist then you will need to add IPs to it yours
 
 You can also add IPs to your local blacklist using the IP Blacklist page in the Admin plugin. This is a nice graphical interface for the `local` table of the `/user/data/ip-blacklist/blacklists.sqlite` database.
 
+![Screenshot of the IP Blacklist Admin Interface, showing how the local blacklist can be searched, and IP addresses added and removed.](./resources/IP%20Blacklist%20Admin%20Interface.png "IP addresses can be added and removed from the local blacklist from the Admin interface.")
+
 ### Filtering
 Filtering works by matching the [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs) of incoming requests to your site against known abusive requests. This is done using regex pattern matching, and this plugin comes by default with a number of regex patterns to match known exploits.
 
@@ -120,6 +122,10 @@ Filtering works by matching the [URI](https://en.wikipedia.org/wiki/Uniform_Reso
 Once an abusive request has been identified, the IP is recorded and added to the local blacklist. You may also choose for these abusive IPs to automatically be reported to AbuseIPDB.
 
 __Note:__ Reporting abusive IPs to AbuseIPDB requires _both_ a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api) _and_ the elevated [Reporting Privilege](https://www.abuseipdb.com/account/request-reporting-privilege).
+
+You can customise and extend the filters used to identify abusive requests via the plugin configuration.
+
+![Screenshot of the IP Blacklist Plugin Configuration, showing how filters can be customised.](./resources/IP%20Blacklist%20Plugin%20Configuration.png "Filters can be customised via the plugin configuration.")
 
 ---
 
