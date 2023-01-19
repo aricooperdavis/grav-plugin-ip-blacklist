@@ -10,10 +10,22 @@ enable_reporting: false
 enable_filtering: false
 filters:
   -
-    pattern: /\.aws/credentials
+    pattern: /\.aws
+    enabled: '1'
+  - 
+    pattern: /\.DS_Store
     enabled: '1'
   -
     pattern: /\.env
+    enabled: '1'
+  -
+    pattern: /\.hg
+    enabled: '1'
+  -
+    pattern: /\.svn
+    enabled: '1'
+  -
+    pattern: /\.vscode
     enabled: '1'
   -
     pattern: '\?XDEBUG_SESSION_START='
@@ -41,6 +53,9 @@ filters:
     enabled: '1'
   -
     pattern: /evox/about
+    enabled: '1'
+  -
+    pattern: /lock360\.php
     enabled: '1'
   -
     pattern: '/mifs/\.;/services/LogService '
