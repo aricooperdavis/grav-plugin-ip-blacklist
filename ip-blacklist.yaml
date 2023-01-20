@@ -19,6 +19,9 @@ filters:
     pattern: /\.env
     enabled: '1'
   -
+    pattern: /\.git
+    enabled: '1'
+  -
     pattern: /\.hg
     enabled: '1'
   -
@@ -28,7 +31,10 @@ filters:
     pattern: /\.vscode
     enabled: '1'
   -
-    pattern: '\?XDEBUG_SESSION_START='
+    pattern: \?XDEBUG_SESSION_START=
+    enabled: '1'
+  -
+    pattern: /aaaaaaaaaaaaaaaaaaaaaaaaaqr
     enabled: '1'
   -
     pattern: /actuator/gateway/routes
@@ -43,7 +49,7 @@ filters:
     pattern: /alfacgiapi/perl\.alfa
     enabled: '1'
   -
-    pattern: '/autodiscover/autodiscover\.json\?@zdi/Powershell '
+    pattern: /autodiscover/autodiscover\.json\?@zdi/Powershell
     enabled: '1'
   -
     pattern: /data/admin/allowurl\.txt
@@ -58,13 +64,13 @@ filters:
     pattern: /lock360\.php
     enabled: '1'
   -
-    pattern: '/mifs/\.;/services/LogService '
+    pattern: /mifs/\.;/services/LogService
     enabled: '1'
   -
     pattern: /nmaplowercheck\d+
     enabled: '1'
   -
-    pattern: '/owa/auth/logon\.aspx\?'
+    pattern: /owa/auth/logon\.aspx\?
     enabled: '1'
   -
     pattern: /oam/server/opensso/sessionservice
@@ -76,7 +82,19 @@ filters:
     pattern: /Public/home/js/check\.js
     enabled: '1'
   -
+    pattern: /Res/login\.html
+    enabled: '1'
+  -
     pattern: /scripts/WPnBr\.dll
+    enabled: '1'
+  -
+    pattern: /sockjs/244/[a-z]+/websocket
+    enabled: '1'
+  -
+    pattern: /stalker_portal/
+    enabled: '1'
+  -
+    pattern: /wp-[a-z]+
     enabled: '1'
   -
     pattern: /xmlrpc\.php
