@@ -129,6 +129,16 @@ You can customise and extend the filters used to identify abusive requests via t
 
 ---
 
+## Stats
+
+We have the plugin running on one of our sites, set up to report all abusive IPs to AbuseIPDB:
+
+<a href="https://www.abuseipdb.com/user/102256" title="AbuseIPDB is an IP address blacklist for webmasters and sysadmins to report IP addresses engaging in abusive behavior on their networks">
+	<img src="https://www.abuseipdb.com/contributor/102256.svg" alt="AbuseIPDB Contributor Badge" style="width: 391px;background: #35c246 linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.3) 50%, rgba(0,0,0,.2) 51%, rgba(0,0,0,0));padding: 5px;">
+</a>
+
+---
+
 ## FAQs
 __Q: Does IP blacklisting work if my site uses Cloudflare?__
 
