@@ -166,7 +166,7 @@ class IPBlacklistPlugin extends Plugin
 
         // Filtering
         if ($config['enable_filtering']) {
-            $uri = $this->grav['uri'];
+            $uri = $this->grav['uri']->getCurrentUri();
             foreach ($config['filters'] as $filter) {
                 // Found abusive request
                 if (preg_match('~'.$filter['pattern'].'~', $uri)) {

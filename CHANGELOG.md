@@ -1,3 +1,9 @@
+# v1.0.3
+##  20-01-2023
+
+1. [](#bugfix)
+    * Fixed bug where URI being passed to filters did not include file extension in some cases
+
 # v1.0.2
 ##  20-01-2023
 

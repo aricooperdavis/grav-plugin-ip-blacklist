@@ -51,7 +51,7 @@ filters:
     pattern: /alfacgiapi/perl\.alfa
     enabled: '1'
   -
-    pattern: /autodiscover/autodiscover\.json\?@zdi/Powershell
+    pattern: /autodiscover/autodiscover
     enabled: '1'
   -
     pattern: /data/admin/allowurl\.txt
