@@ -5,6 +5,8 @@ sources:
   local: false
   abuseipdb: false
 enable_auto_cache: false
+enable_auto_clean: false
+auto_clean_len: 10000
 response: '400'
 enable_reporting: false
 enable_filtering: false
@@ -61,6 +63,9 @@ filters:
     pattern: /evox/about
     enabled: '1'
   -
+    pattern: /license\.txt
+    enabled: '1'
+  -
     pattern: /lock360\.php
     enabled: '1'
   -
@@ -88,10 +93,16 @@ filters:
     pattern: /scripts/WPnBr\.dll
     enabled: '1'
   -
+    pattern: /showLogin\.cc
+    enabled: '1'
+  -
     pattern: /sockjs/244/[a-z]+/websocket
     enabled: '1'
   -
     pattern: /stalker_portal/
+    enabled: '1'
+  -
+    pattern: /static/admin/javascript/hetong\.js
     enabled: '1'
   -
     pattern: /wp-[a-z]+

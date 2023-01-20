@@ -56,7 +56,11 @@ sources:
   abuseipdb: false
   # The AbuseIPDB blacklist (API Key required, see above)
 enable_auto_cache: false
-# Whether to use the Grav Scheduler to cache the AbuseIPDB in the background (recommended)
+# Whether to use the Grav Scheduler to cache the AbuseIPDB blacklist daily (recommended)
+enable_auto_clean: false
+# Whether to use the Grav Scheduler to trim the size of the local blacklist daily
+auto_clean_len: 10000
+# The max length to which the local blacklist is trimmed by the Auto-Clean job
 response: '400'
 # The HTTP response code to return to blacklisted requests (options: 400, 403, 418, 503)
 enable_reporting: false
@@ -66,7 +70,7 @@ enable_filtering: false
 filters:
 # An array of regex patterns against which incoming request URIs are matched to detect abusive behaviour
   -
-    pattern: '/\.env'
+    pattern: '/\.aws'
     # The regex pattern (regex special characters must be escaped)
     enabled: '0'
     # Whether this filter is enabled
@@ -113,6 +117,8 @@ If you choose to use a local blacklist then you will need to add IPs to it yours
 You can also add IPs to your local blacklist using the IP Blacklist page in the Admin plugin. This is a nice graphical interface for the `local` table of the `/user/data/ip-blacklist/blacklists.sqlite` database.
 
 ![Screenshot of the IP Blacklist Admin Interface, showing how the local blacklist can be searched, and IP addresses added and removed.](./resources/IP%20Blacklist%20Admin%20Interface.png "IP addresses can be added and removed from the local blacklist from the Admin interface.")
+
+If you wish to limit the size of the local blacklist you can enable the Auto-Clean Grav Scheduler job and set a maximum number of IP addresses in the plugin configuration. This job will run daily to trim the local blacklist to size and compress the database.
 
 ### Filtering
 Filtering works by matching the [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Example_URIs) of incoming requests to your site against known abusive requests. This is done using regex pattern matching, and this plugin comes by default with a number of regex patterns to match known exploits.
@@ -189,6 +195,20 @@ A: You silly goose! You'll have to remove your IP from the `local` table in the 
 
 If you aren't comfortable with manipulating the database then you can just delete the whole file and it'll be re-created (empty!) when needed.
 
+__Q: The plugin doesn't work on my site!__
+
+A: Some shared hosting providers are quite aggressive with their security practices. You can usually get in contact with them and ask them to relax some of their security measures for your user, but knowing which ones are responsible for breaking the plugin can be tricky.
+
+<!--
+Here is a table of some symptoms and causes that may be useful for identifying what's breaking the plugin:
+
+| Symptom | Cause |
+| :- | :- |
+| The admin interface shows loading spinners. | ? |
+-->
+
+If you need help getting it fixed please [open an Issue](https://github.com/aricooperdavis/grav-plugin-ip-blacklist/issues) and we'll try to help. This will also allow us to modify the plugin to avoid these security measures, and we can add your fix to the documentation to help others.
+
 ---
 
 ## To Do
@@ -196,7 +216,6 @@ If you aren't comfortable with manipulating the database then you can just delet
 If you would like to help us develop this plugin then please consider starting with some of these projects that we've got on the go:
 
 - [ ] Add lots more default filters!
-- [ ] Implement local blacklist expiry and size limit.
 - [ ] Disable reporting and AbuseIPDB blacklisting in the event of an unauthorised API request, to prevent repeated failures against the AbuseIPDB API.
 - [ ] Allow cached AbuseIPDB blacklists to be customised based on query parameters to the `blacklist` API endpoint (`exceptCountries`, `limit`, and `confidenceMinimum`).
 - [ ] Implement a buffer that the IPs of non-blacklisted requests are added to so that they may be checked retrospectively against the AbuseIPDB `check` API endpoint and added to the local blacklist if found to be abusive.

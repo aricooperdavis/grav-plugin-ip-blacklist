@@ -1,7 +1,7 @@
 name: IP Blacklist
 slug: ip-blacklist
 type: plugin
-version: 1.0.1
+version: 1.0.2
 description: Detects abusive requests and blocks abusive IPs. Interfaces with AbuseIPDB for blacklisting and reporting.
 icon: ban
 author:
@@ -73,6 +73,26 @@ form:
             0: PLUGIN_ADMIN.DISABLED
           validate:
             type: bool
+        enable_auto_clean:
+          type: toggle
+          label: PLUGIN_IP_BLACKLIST.BLACKLISTING_ENABLE_AUTO_CLEAN
+          help: PLUGIN_IP_BLACKLIST.BLACKLISTING_ENABLE_AUTO_CLEAN_HELP
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool
+        auto_clean_len:
+          type: number
+          label: PLUGIN_IP_BLACKLIST.BLACKLISTING_AUTO_CLEAN_LEN
+          help: PLUGIN_IP_BLACKLIST.BLACKLISTING_AUTO_CLEAN_LEN_HELP
+          default: 10000
+          validate:
+            min: 1
+            max: 1000000
+            step: 1
         response:
           type: select
           label: PLUGIN_IP_BLACKLIST.BLACKLIST_RESPONSE

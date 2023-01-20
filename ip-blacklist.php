@@ -190,8 +190,13 @@ class IPBlacklistPlugin extends Plugin
     public function onSchedulerInitialized(Event $e)
     {
         $config = $this->config();
+        $scheduler = $e['scheduler'];
+        if ($config['enable_auto_clean']) {
+            $job = $scheduler->addFunction('Grav\Plugin\IPBlacklistPlugin::cleanBlacklists', [], 'ip-blacklist-auto-clean');
+            $job->backlink('plugins/ip-blacklist');
+            $job->at('35 2 * * *');
+        }
         if ($config['enable_auto_cache'] && $config['enable_blacklisting'] && $config['sources']['abuseipdb']) {
-            $scheduler = $e['scheduler'];
             $job = $scheduler->addFunction('Grav\Plugin\IPBlacklistPlugin::updateAbuseipdbBlacklist', [], 'ip-blacklist-auto-cache');
             $job->backlink('plugins/ip-blacklist');
             $job->at('45 2 * * *');
@@ -233,7 +238,7 @@ class IPBlacklistPlugin extends Plugin
     {
         $db = $this->getDatabase();
         $stmt = $db->prepare('INSERT OR IGNORE INTO "local" ("ip") VALUES (:ip)');
-        $stmt->bindValue(':ip', $ip);
+        $stmt->bindValue(':ip', $ip, SQLITE3_TEXT);
         $stmt->execute();
     }
 
@@ -313,7 +318,7 @@ class IPBlacklistPlugin extends Plugin
         // Update updated table entry
         $updated = time();
         $stmt = $db->prepare('INSERT OR REPLACE INTO "updated" ("table","updated") VALUES ("abuseipdb",:updated)');
-        $stmt->bindValue(':updated', $updated);
+        $stmt->bindValue(':updated', $updated, SQLITE3_INTEGER);
         $stmt->execute();
     }
 
@@ -367,6 +372,25 @@ class IPBlacklistPlugin extends Plugin
         self::$db->exec('INSERT OR IGNORE INTO "updated" ("table") VALUES ("local"),("abuseipdb")');
 
         return self::$db;
+    }
+
+    /**
+     * Trim local blacklist to size and vacuum database
+     */
+    public static function cleanBlacklists()
+    {
+        // Get config details
+        $config = Grav::instance()['config']->get('plugins.ip-blacklist');
+        $limit = $config['auto_clean_len'];
+
+        // Trim local blacklist
+        $db = self::getDatabase();
+        $stmt = $db->prepare('DELETE FROM "local" WHERE "rowid" NOT IN (SELECT "rowid" FROM "local" ORDER BY "rowid" DESC LIMIT :limit)');
+        $stmt->bindValue(':limit', $limit, SQLITE3_INTEGER);
+        $stmt->execute();
+
+        // Vacuum blacklist db
+        $db->exec('VACUUM');
     }
 
     /**
