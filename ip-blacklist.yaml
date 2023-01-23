@@ -105,6 +105,9 @@ filters:
     pattern: /static/admin/javascript/hetong\.js
     enabled: '1'
   -
+    pattern: /version
+    enabled: '1'
+  -
     pattern: /wp-[a-z]+
     enabled: '1'
   -

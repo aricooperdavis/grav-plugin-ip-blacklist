@@ -216,6 +216,7 @@ If you need help getting it fixed please [open an Issue](https://github.com/aric
 If you would like to help us develop this plugin then please consider starting with some of these projects that we've got on the go:
 
 - [ ] Add lots more default filters!
+- [ ] Allowing plugin users to fetch updates to the filter list, without overwriting their filters (ideas gratefully recevied!).
 - [ ] Disable reporting and AbuseIPDB blacklisting in the event of an unauthorised API request, to prevent repeated failures against the AbuseIPDB API.
 - [ ] Allow cached AbuseIPDB blacklists to be customised based on query parameters to the `blacklist` API endpoint (`exceptCountries`, `limit`, and `confidenceMinimum`).
 - [ ] Implement a buffer that the IPs of non-blacklisted requests are added to so that they may be checked retrospectively against the AbuseIPDB `check` API endpoint and added to the local blacklist if found to be abusive.
