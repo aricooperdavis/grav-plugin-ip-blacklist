@@ -67,15 +67,12 @@ enable_reporting: false
 # Whether to report abusive IPs to AbuseIPDB (API Key required, see above)
 enable_filtering: false
 # Whether to filter incoming requests in order to detect abuse and add the abusive IPs to the local blacklist. Overrides individual filter `enabled` attribute.
-filters:
-# An array of regex patterns against which incoming request URIs are matched to detect abusive behaviour
-  -
-    pattern: '/\.aws'
-    # The regex pattern (regex special characters must be escaped)
-    enabled: '0'
-    # Whether this filter is enabled
-  -
-    [...]
+filters: |
+# A list of regex patterns against which incoming request URIs are matched to detect abusive behaviour
+  # Enter one regex pattern per line. Disable patterns with a comment (#). E.g.:
+  # /path/to/exploit\.php/?action=hack
+  /_ignition/execute-solution
+  [...]
 ```
 
 Note that if you use the Admin Plugin, a file with your configuration named ip-blacklist.yaml will be saved in the `user/config/plugins/`-folder once the configuration is saved in the Admin.
@@ -129,7 +126,9 @@ Once an abusive request has been identified, the IP is recorded and added to the
 
 > __Note:__ Reporting abusive IPs to AbuseIPDB requires _both_ a free [AbuseIPDB API key](https://www.abuseipdb.com/account/api) _and_ the elevated [Reporting Privilege](https://www.abuseipdb.com/account/request-reporting-privilege).
 
-You can customise and extend the filters used to identify abusive requests via the plugin configuration.
+You can customise and extend the filters used to identify abusive requests via the plugin configuration. The `filters` config value is just a multiline string where each line is a regex filter. You can add, modify, and delete lines, or comment them out with a `#`. Be aware that all regex characters need escaping.
+
+Be careful doing this - they're regex patterns and matching is performed against the entire URI, so you'll need to escape any regex symbols i.e. `?` should be `\?` and `.co.uk` should be `\.co\.uk`.
 
 ![Screenshot of the IP Blacklist Plugin Configuration, showing how filters can be customised.](./resources/IP%20Blacklist%20Plugin%20Configuration.png "Filters can be customised via the plugin configuration.")
 
@@ -187,7 +186,7 @@ __Q: Some of the filters are catching legitimate requests, whilst some abusive r
 
 A: We try to ensure that the default filters shipped with the plugin cover a decent range of abusive requests but don't match common non-abusive URIs. You may need to tweak these filters a little for your particular setup.
 
-You can disable, delete, and add new filters in the plugin configuration. Be careful doing this - they're regex patterns and matching is performed against the entire URI, so you'll need to escape any regex symbols i.e. `?` should be `\?` and `.co.uk` should be `\.co\.uk`.
+You can modify the filters in the `filters` option of the plugin configuration (see above for details).
 
 __Q: Help, I was testing the filters and have blacklisted my own IP!__
 

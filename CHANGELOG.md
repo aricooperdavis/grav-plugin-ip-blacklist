@@ -1,3 +1,9 @@
+# v1.0.4
+## 23-01-2023
+
+1. [](#improved)
+    * Changed format of `filters` config to string to improve admin interface useability
+
 # v1.0.3
 ##  20-01-2023
 

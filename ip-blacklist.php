@@ -167,9 +167,11 @@ class IPBlacklistPlugin extends Plugin
         // Filtering
         if ($config['enable_filtering']) {
             $uri = $this->grav['uri']->getCurrentUri();
-            foreach ($config['filters'] as $filter) {
-                // Found abusive request
-                if (preg_match('~'.$filter['pattern'].'~', $uri)) {
+            $filter = strtok($config['filters'], "\n");
+            while ($filter !== false) {
+                // Filter for abusive requests
+                $filter = trim($filter);
+                if (substr($filter, 0, 0) != '#' && preg_match('~'.$filter.'~', $uri)) {
                     $this->addIpToBlacklist($ip);
                     if ($config['enable_reporting']) {
                         $this->reportIp($ip, $path);
@@ -180,6 +182,7 @@ class IPBlacklistPlugin extends Plugin
                     }
                     break;
                 }
+                $filter = strtok("\n");
             }
         }
     }

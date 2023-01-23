@@ -25,5 +25,6 @@ en:
     ENABLE_REPORTING: Enable reporting
     ENABLE_REPORTING_HELP: Whether or not to report abusive IPs detected from incoming requests
     FILTERS: 'Filters:'
-    FILTERS_PATTERN: Pattern (regex)
+    FILTERS_HELP: '# Enter one regex pattern per line. Disable patterns with a comment (#).'
     FILTERS_ENABLED: Enable
+    FILTERS_PLACEHOLDER: '# /\.env'
