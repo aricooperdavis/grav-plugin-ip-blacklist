@@ -54,4 +54,5 @@
 
 #last-25 .results .ip {
     margin: 0;
+    word-break: break-all;
 }
