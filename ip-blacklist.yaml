@@ -14,7 +14,7 @@ filters:
   -
     pattern: /\.aws
     enabled: '1'
-  - 
+  -
     pattern: /\.DS_Store
     enabled: '1'
   -
@@ -33,7 +33,10 @@ filters:
     pattern: /\.vscode
     enabled: '1'
   -
-    pattern: \?XDEBUG_SESSION_START=
+    pattern: /_ignition/execute-solution
+    enabled: '1'
+  -
+    pattern: '\?XDEBUG_SESSION_START='
     enabled: '1'
   -
     pattern: /aaaaaaaaaaaaaaaaaaaaaaaaaqr
@@ -51,6 +54,12 @@ filters:
     pattern: /alfacgiapi/perl\.alfa
     enabled: '1'
   -
+    pattern: /api/v2/cmdb/system/admin/admin
+    enabled: '1'
+  -
+    pattern: /auth/login
+    enabled: '1'
+  -
     pattern: /autodiscover/autodiscover
     enabled: '1'
   -
@@ -63,22 +72,28 @@ filters:
     pattern: /evox/about
     enabled: '1'
   -
+    pattern: /index\.php\?case=admin&act=login&admin_dir=admin&site=default
+    enabled: '1'
+  -
     pattern: /license\.txt
     enabled: '1'
   -
     pattern: /lock360\.php
     enabled: '1'
   -
-    pattern: /mifs/\.;/services/LogService
+    pattern: '/mifs/\.;/services/LogService '
     enabled: '1'
   -
     pattern: /nmaplowercheck\d+
     enabled: '1'
   -
-    pattern: /owa/auth/logon\.aspx\?
+    pattern: '/owa/auth/logon\.aspx\?'
     enabled: '1'
   -
     pattern: /oam/server/opensso/sessionservice
+    enabled: '1'
+  -
+    pattern: /phpqrcode/shell\.php
     enabled: '1'
   -
     pattern: /Portal/Portal\.mwsl
@@ -87,16 +102,31 @@ filters:
     pattern: /Public/home/js/check\.js
     enabled: '1'
   -
+    pattern: /remote/fgt_lang
+    enabled: '1'
+  -
+    pattern: /remote/login
+    enabled: '1'
+  -
     pattern: /Res/login\.html
     enabled: '1'
   -
     pattern: /scripts/WPnBr\.dll
     enabled: '1'
   -
+    pattern: /seller/login
+    enabled: '1'
+  -
+    pattern: /sftp-config\.json
+    enabled: '1'
+  -
+    pattern: /sgadmin/fncPurseWithdraw
+    enabled: '1'
+  -
     pattern: /showLogin\.cc
     enabled: '1'
   -
-    pattern: /sockjs/244/[a-z]+/websocket
+    pattern: '/sockjs/244/[a-z]+/websocket'
     enabled: '1'
   -
     pattern: /stalker_portal/
@@ -105,10 +135,16 @@ filters:
     pattern: /static/admin/javascript/hetong\.js
     enabled: '1'
   -
+    pattern: think.{1,3}app.{1,3}invokeMethod
+    enabled: '1'
+  -
+    pattern: /ThinkPHP/README\.txt
+    enabled: '1'
+  -
     pattern: /version
     enabled: '1'
   -
-    pattern: /wp-[a-z]+
+    pattern: '/wp-[a-z]+'
     enabled: '1'
   -
     pattern: /xmlrpc\.php
