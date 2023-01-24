@@ -14,6 +14,7 @@ filters: |
   # Enter one regex pattern per line. Disable patterns with a comment (#). E.g.:
   # /path/to/exploit\.php/?action=hack
   /_ignition/execute-solution
+  /_profiler/phpinfo
   /\.aws
   /\.DS_Store
   /\.env
@@ -25,6 +26,8 @@ filters: |
   /actuator/gateway/routes
   /actuator/health
   /administrator/index\.php
+  /agc/timeclock\.php
+  /agent/timeclock\.php
   /alfacgiapi/perl\.alfa
   /api/v2/cmdb/system/admin/admin
   /auth/login
@@ -33,12 +36,15 @@ filters: |
   /Dockerrun\.aws\.json
   /evox/about
   /index\.php\?case=admin&act=login&admin_dir=admin&site=default
+  /info.php
   /license\.txt
   /lock360\.php
   /mifs/\.;/services/LogService
   /nmaplowercheck\d+
   /oam/server/opensso/sessionservice
   /owa/auth/logon\.aspx\?
+  /phpdebugbar
+  /phpinfo
   /phpqrcode/shell\.php
   /Portal/Portal\.mwsl
   /Public/home/js/check\.js
