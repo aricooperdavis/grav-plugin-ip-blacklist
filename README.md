@@ -132,6 +132,8 @@ Be careful doing this - they're regex patterns and matching is performed against
 
 ![Screenshot of the IP Blacklist Plugin Configuration, showing how filters can be customised.](./resources/IP%20Blacklist%20Plugin%20Configuration.png "Filters can be customised via the plugin configuration.")
 
+As these filters are stored in your plugin configuration they will not be automatically updated when the plugin is updated. As such a notification will be shown in the IP Blacklist admin interface when an update to the filters is available, which will enable you to automatically or manually install the new default filters.
+
 ---
 
 ## Stats

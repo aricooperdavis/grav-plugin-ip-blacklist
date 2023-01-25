@@ -9,6 +9,7 @@ addEventListener('DOMContentLoaded', (event) => {
     });
 
     // On-load AJAXs
+    processInput('filter-list');
     processInput('last-25');
     processInput('stats');
 });
@@ -16,8 +17,10 @@ addEventListener('DOMContentLoaded', (event) => {
 // Send AJAX requests to backend
 function processInput(id) {
 
-    // Show loaders, hide results
     _id = ( ['add','remove'].includes(id) ? 'search' : id );
+    _id = ( ['update','hide'].includes(id) ? 'filter-list' : id );
+    
+    // Show loaders, hide results
     let loader = document.querySelector(`#${_id} .grav-loader`);
     loader.style.display = 'block';
     let block = document.querySelector(`#${_id} .results`);
@@ -38,6 +41,21 @@ function processInput(id) {
     xhr.onload = () => {
         let response = JSON.parse(xhr.response);
         switch (id) {
+            case 'filter-list':
+                if (response['installed'] < response['release']) {
+                    document.querySelector('#filter-list').style.display = 'block';
+                    document.querySelector('#filter-list #version').innerHTML = `(${response['installed']} &rarr; ${response['release']})`;
+                }
+                break;
+
+            case 'update':
+                document.querySelector('#filter-list').style.display = 'none';
+                break;
+
+            case 'hide':
+                document.querySelector('#filter-list').style.display = 'none';
+                break;
+
             case 'last-25':
                 block.innerHTML = response.map(ip => {
                     return `<p class="ip">&bull; <a href="https://www.abuseipdb.com/check/${ip}" target="_blank">${ip}</a></p>`;
@@ -78,7 +96,7 @@ function processInput(id) {
                 break;
         }
         // Hide loader
-        loader.style.display = 'none';
         block.style.display = 'block';
+        loader.style.display = 'none';
     };
 }

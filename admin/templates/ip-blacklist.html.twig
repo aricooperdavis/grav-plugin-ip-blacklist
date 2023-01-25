@@ -19,6 +19,14 @@
 {% endblock %}
 
 {% block content %}
+    <p id="filter-list" class="notices yellow">
+        <strong>New filters available</strong>: <span class="grav-loader results"></span><span id="version"></span></br>
+        An update has been released to the default filters that are used to detect whether an incoming request is malicious or not. To keep on top of emerging exploits you should update your filters.</br>
+        &nbsp;&bull; <a id="update" href="javascript:;" onclick="processInput(this.id);">Install the update</a> to overwrite the installed filters with the updated default filters list, or</br>
+        &nbsp;&bull; <a href="https://github.com/aricooperdavis/grav-plugin-ip-blacklist/blob/main/ip-blacklist.yaml" target="_blank">View the updated default filters</a> and update your filter list manually, or</br>
+        &nbsp;&bull; <a id="hide" href="javascript:;" onclick="processInput(this.id);">Hide this message</a> until a new update is available.
+    </p>
+
     <div id="search">
         <h5>Search</h5>
         <label for="search-box">Enter an IP Address (e.g. 127.0.0.1):</label>

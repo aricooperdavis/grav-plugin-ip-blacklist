@@ -36,12 +36,14 @@ filters: |
   /Dockerrun\.aws\.json
   /evox/about
   /index\.php\?case=admin&act=login&admin_dir=admin&site=default
+  /indoxploit\.php
   /info.php
   /license\.txt
   /lock360\.php
   /mifs/\.;/services/LogService
   /nmaplowercheck\d+
   /oam/server/opensso/sessionservice
+  /olux\.php
   /owa/auth/logon\.aspx\?
   /phpdebugbar
   /phpinfo
@@ -50,18 +52,23 @@ filters: |
   /Public/home/js/check\.js
   /remote/fgt_lang
   /remote/login
+  /ReportServer
   /Res/login\.html
   /scripts/WPnBr\.dll
   /seller/login
   /sftp-config\.json
   /sgadmin/fncPurseWithdraw
+  /shell\.php
   /showLogin\.cc
   /sockjs/244/[a-z]+/websocket
   /stalker_portal/
   /static/admin/javascript/hetong\.js
   /ThinkPHP/README\.txt
+  /up\.php
+  /upload\.php
   /version
   /wp-[a-z]+
+  /wso\.php
   /xmlrpc\.php
   /xxxss
   \?.+think.{1,3}app.{1,3}invokeMethod

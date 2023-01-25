@@ -7,6 +7,7 @@ use Grav\Common\Plugin;
 use Grav\Common\Filesystem\Folder;
 use Grav\Framework\Psr7\Response;
 use RocketTheme\Toolbox\Event\Event;
+use Symfony\Component\Yaml\Yaml;
 
 use GuzzleHttp\Client;
 use SQLite3;
@@ -70,6 +71,7 @@ class IPBlacklistPlugin extends Plugin
         $this->enable([
             'onAdminMenu' => ['onAdminMenu', 0],
             'onAdminTwigTemplatePaths' => ['onAdminTwigTemplatePaths', 0],
+            'onAdminAfterSave' => ['onAdminAfterSave',0],
         ]);
 
         return;
@@ -98,7 +100,29 @@ class IPBlacklistPlugin extends Plugin
             // Make appropriate DB query
             $db = $this->getDatabase();
             switch ($body['action']) {
+                case 'update':
+                    $this->updateFilterList();
+                    $data = 1;
+                    break;
+    
+                case 'hide':
+                    $this->logFilterListUpdate($this->getReleaseVersion());
+                    $data = 1;
+                    break;
+                
+                case 'filter-list':
+                    // Check if filter list is up-to-date
+                    $release = $this->getReleaseVersion();
+                    $stmt = $db->prepare('SELECT ("updated") FROM "updated" WHERE "table" = "filters" LIMIT 1');
+                    $result = $stmt->execute();
+                    $data = [
+                        "installed" => $result->fetchArray(SQLITE3_NUM)[0],
+                        "release" => $release,
+                    ];
+                    break;
+
                 case 'last-25':
+                    // Get last 25 IPs added to local blacklist
                     $stmt = $db->prepare('SELECT ("ip") FROM "local" ORDER BY "rowid" DESC LIMIT 25');
                     $result = $stmt->execute();
                     $data = [];
@@ -108,6 +132,7 @@ class IPBlacklistPlugin extends Plugin
                     break;
 
                 case 'stats':
+                    // Get stats from local blacklist
                     $stmt = $db->prepare('SELECT COUNT(1) FROM "local"');
                     $result = $stmt->execute();
                     $data = [
@@ -119,6 +144,7 @@ class IPBlacklistPlugin extends Plugin
                     break;
 
                 case 'search':
+                    // Search local blacklist for IP
                     $stmt = $db->prepare('SELECT ("ip") FROM "local" WHERE "ip"=:ip LIMIT 1');
                     $stmt->bindValue(':ip', $body['ip'], SQLITE3_TEXT);
                     $result = $stmt->execute();
@@ -126,18 +152,21 @@ class IPBlacklistPlugin extends Plugin
                     break;
 
                 case 'add':
+                    // Add IP to local blacklist
                     $stmt = $db->prepare('INSERT INTO "local" ("ip") VALUES (:ip)');
                     $stmt->bindValue(':ip', $body['ip'], SQLITE3_TEXT);
                     $data = (int)(bool)$stmt->execute();
                     break;
 
                 case 'remove':
+                    // Remove IP from local blacklist
                     $stmt = $db->prepare('DELETE FROM "local" WHERE ("ip" = :ip)');
                     $stmt->bindValue(':ip', $body['ip'], SQLITE3_TEXT);
                     $data = (int)(bool)$stmt->execute();
                     break;
 
                 default:
+                    // Report improper query
                     $response = new Response(400, [], json_encode(['Error' => 'Invalid action']));
                     $request->setResponse($response);
                     return;
@@ -235,6 +264,17 @@ class IPBlacklistPlugin extends Plugin
     }
 
     /**
+     * Detect when plugin config is updated and log plugin version
+     */
+    public function onAdminAfterSave($event)
+    {
+        $bp = $event['object']->blueprints();
+        if ($bp['slug'] === 'ip-blacklist') {
+            $this->logFilterListUpdate($bp['version']);
+        }
+    }
+
+    /**
      * Add an IP to the local blacklist
      */
     public function addIpToBlacklist(string $ip)
@@ -321,7 +361,7 @@ class IPBlacklistPlugin extends Plugin
         // Update updated table entry
         $updated = time();
         $stmt = $db->prepare('INSERT OR REPLACE INTO "updated" ("table","updated") VALUES ("abuseipdb",:updated)');
-        $stmt->bindValue(':updated', $updated, SQLITE3_INTEGER);
+        $stmt->bindValue(':updated', $updated, SQLITE3_TEXT);
         $stmt->execute();
     }
 
@@ -371,8 +411,8 @@ class IPBlacklistPlugin extends Plugin
         self::$db = new SQLite3($data_dir.'/blacklists.sqlite');
         self::$db->exec('CREATE TABLE IF NOT EXISTS "local" ("ip" TEXT NOT NULL UNIQUE, PRIMARY KEY("ip"))');
         self::$db->exec('CREATE TABLE IF NOT EXISTS "abuseipdb" ("ip" TEXT NOT NULL UNIQUE, PRIMARY KEY("ip"))');
-        self::$db->exec('CREATE TABLE IF NOT EXISTS "updated" ("table" TEXT NOT NULL UNIQUE, "updated" INT NOT NULL DEFAULT 0, PRIMARY KEY("table"))');
-        self::$db->exec('INSERT OR IGNORE INTO "updated" ("table") VALUES ("local"),("abuseipdb")');
+        self::$db->exec('CREATE TABLE IF NOT EXISTS "updated" ("table" TEXT NOT NULL UNIQUE, "updated" TEXT NOT NULL DEFAULT 0, PRIMARY KEY("table"))');
+        self::$db->exec('INSERT OR IGNORE INTO "updated" ("table") VALUES ("filters"),("abuseipdb")');
 
         return self::$db;
     }
@@ -397,9 +437,58 @@ class IPBlacklistPlugin extends Plugin
     }
 
     /**
+     * Update the filter list with the most recent on GitHub
+     */
+    public function updateFilterList()
+    {
+        $client = new Client([
+            'base_uri' => 'https://cdn.jsdelivr.net/gh/aricooperdavis/grav-plugin-ip-blacklist/ip-blacklist.yaml'
+        ]);
+        $response = $client->request('GET');
+        if ($response->getStatusCode() !== 200) {
+            $this->grav['log']->debug('Could not fetch ip-blacklist.yaml from jsDelivr: '.$response->getBody());
+        }
+
+        $yaml = Yaml::parse($response->getBody());
+        $this->grav['config']->set('plugins.ip-blacklist.filters', $yaml['filters']);
+        $this->saveConfig('ip-blacklist');
+
+        $this->logFilterListUpdate($this->getReleaseVersion());
+    }
+
+    /**
+     * Log plugin version at which filter list is updated
+     */
+    public function logFilterListUpdate($version=null)
+    {
+        $version = $version ?? $this->getBlueprint()['version'] ;
+
+        $db = $this->getDatabase();
+        $stmt = $db->prepare('INSERT OR REPLACE INTO "updated" ("table", "updated") VALUES ("filters", :updated)');
+        $stmt->bindValue(':updated', $version, SQLITE3_TEXT);
+        $stmt->execute();
+    }
+
+    /**
+     * Get the release version code
+     */
+    public function getReleaseVersion(): string
+    {
+        $client = new Client([
+            'base_uri' => 'https://data.jsdelivr.com/v1/package/gh/aricooperdavis/grav-plugin-ip-blacklist'
+        ]);
+        $response = $client->request('GET');
+        if ($response->getStatusCode() != 200) {
+            $this->grav['log']->debug('Could not get version numbers from jsDelivr: '.$response->getBody());
+            return 0;
+        }
+        return json_decode($response->getBody(), true)['versions'][0];
+    }
+
+    /**
      * Reject request with appropriate HTTP response
      */
-    function rejectRequest($request)
+    public function rejectRequest($request)
     {
         $text = [
             400 => 'Bad Request',
@@ -416,7 +505,7 @@ class IPBlacklistPlugin extends Plugin
      * Get the IP of a user, even if they are behind cloudflare
      * https://github.com/francodacosta/grav-plugin-page-stats/blame/47ff58a7de94860244ffe24c2cb82bc83841ce85/page-stats.php#L99
      */
-    function getRequestIp(): string
+    public function getRequestIp(): string
     {
         if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
@@ -436,7 +525,7 @@ class IPBlacklistPlugin extends Plugin
         return $ip;
     }
 
-    function human_filesize($bytes, $decimals = 0) {
+    public function human_filesize($bytes, $decimals = 0) {
         $sz = 'BKMGTP';
         $factor = floor((strlen($bytes) - 1) / 3);
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
