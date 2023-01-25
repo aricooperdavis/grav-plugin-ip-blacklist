@@ -17,8 +17,7 @@ addEventListener('DOMContentLoaded', (event) => {
 // Send AJAX requests to backend
 function processInput(id) {
 
-    _id = ( ['add','remove'].includes(id) ? 'search' : id );
-    _id = ( ['update','hide'].includes(id) ? 'filter-list' : id );
+    _id = ( ['add','remove'].includes(id) ? 'search' : ( ['update','hide'].includes(id) ? 'filter-list' : id ) );
     
     // Show loaders, hide results
     let loader = document.querySelector(`#${_id} .grav-loader`);
