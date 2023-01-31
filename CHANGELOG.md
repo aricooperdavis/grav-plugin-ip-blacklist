@@ -1,5 +1,11 @@
+# v1.0.6
+## 31-01-2023
+
+1. [](#improved)
+	* Added more filter patterns for common exploits
+
 # v1.0.5
-## 25-01-2024
+## 25-01-2023
 
 1. [](#new)
     * Added notification in admin interface when plugin has been updated but filters have not.
