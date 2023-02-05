@@ -24,6 +24,7 @@ filters: |
   /\.svn
   /\.vscode
   /\.well-known/security\.txt
+  /\.well-known/autoconfig
   /aaaaaaaaaaaaaaaaaaaaaaaaaqr
   /actuator/gateway/routes
   /actuator/health
@@ -32,29 +33,37 @@ filters: |
   /agc/timeclock\.php
   /agent/timeclock\.php
   /alfacgiapi/perl\.alfa
-  /api/v[0-9]/
   /api/consumer/
+  /api/tools/
+  /api/v[0-9]/
   /auth/login
   /autodiscover/autodiscover
+  /axis2/axis2-admin
   /data/admin/allowurl\.txt
   /Dockerrun\.aws\.json
+  /epa/scripts/
   /evox/about
+  /global-protect/login\.esp
   /GponForm/
   /index\.php\?case=admin&act=login&admin_dir=admin&site=default
   /indoxploit\.php
   /info.php
+  /jquery.*\.js
   /license\.txt
   /lock360\.php
+  /login
   /mifs/\.;/services/LogService
   /nmaplowercheck\d+
   /oam/server/opensso/sessionservice
   /olux\.php
-  /owa/auth/logon\.aspx\?
+  /owa/auth\.owa
+  /owa/auth/logon\.aspx
   /phpdebugbar
   /phpinfo
   /phpmyadmin
   /phpqrcode/shell\.php
   /pmd/index\.php
+  /pools/default/buckets
   /Portal/Portal\.mwsl
   /Public/home/js/check\.js
   /remote/fgt_lang
@@ -76,10 +85,11 @@ filters: |
   /ThinkPHP/README\.txt
   /up\.php
   /upload\.php
+  /vendor/phpunit/
   /verify-admitad\.txt
   /version
   /wp-[a-z]+
-  /wso\.php
+  /wso\d*\.php
   /xmlrpc\.php
   /xxxss
   /ztp/cgi-bin/handler
