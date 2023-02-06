@@ -2,6 +2,8 @@ en:
   PLUGIN_IP_BLACKLIST:
     ABUSEIPDB_KEY: <a href="https://www.abuseipdb.com/account/api">AbuseIPDB API Key</a>
     ABUSEIPDB_KEY_HELP: Querying the AbuseIPDB blocklist or reporting abusive IPs requires a free API Key
+    LOGGING: Logging
+    LOGGING_HELP: Log all filtered and blacklisted requests to the Grav debug log (useful for troubleshooting custom filters)
     BLACKLISTING: Blacklisting
     BLACKLISTING_TEXT: 'When blacklisting is enabled incoming requests will have their IP matched against the blacklists selected below. Matching requests will recieve the HTTP response selected below, and no further processing will take place.</br></br><strong>Note</strong>: A free <a href="https://www.abuseipdb.com/account/api">AbuseIPDB API Key</a> is required to fetch the AbuseIPDB blacklist. The local blacklist can be used on its own, but will only be added-to when Filtering is enabled (see section below).'
     BLACKLISTING_ENABLE_BLACKLISTING: Enable blacklisting

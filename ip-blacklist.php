@@ -188,6 +188,9 @@ class IPBlacklistPlugin extends Plugin
         // Blacklisting
         if ($config['enable_blacklisting']) {
             if ($this->queryBlacklists($ip)) {
+                if ($config['logging']) {
+                    $this->grav['log']->debug("[IP Blacklist] Blocked request from blacklisted IP: {$ip}");
+                }
                 $this->rejectRequest($request);
                 return;
             }
@@ -201,17 +204,32 @@ class IPBlacklistPlugin extends Plugin
                 // Filter for abusive requests
                 $filter = trim($filter);
                 if (substr($filter, 0, 0) != '#' && preg_match('~'.$filter.'~', $uri)) {
+                    if ($config['logging']) {
+                        $this->grav['log']->debug("[IP Blacklist] Request matched filter '{$filter}': '{$uri}'");
+                    }
                     $this->addIpToBlacklist($ip);
+                    if ($config['logging']) {
+                        $this->grav['log']->debug("[IP Blacklist] IP blacklisted: '{$ip}'");
+                    }
                     if ($config['enable_reporting']) {
                         $this->reportIp($ip, $path);
+                        if ($config['logging']) {
+                            $this->grav['log']->debug("[IP Blacklist] IP reported: '{$ip}'");
+                        }
                     }
                     if ($config['enable_blacklisting']) {
                         $this->rejectRequest($request);
+                        if ($config['logging']) {
+                            $this->grav['log']->debug("[IP Blacklist] Request rejected: '{$uri}'");
+                        }
                         return;
                     }
                     break;
                 }
                 $filter = strtok("\n");
+            }
+            if ($config['logging']) {
+                $this->grav['log']->debug("[IP Blacklist] Request passed filters: '{$uri}'");
             }
         }
     }

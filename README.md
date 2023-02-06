@@ -47,6 +47,8 @@ enabled: true
 # Enable the overall plugin
 abuseipdb_key: null
 # Your AbuseIPDB API key, required for fetching the AbuseIPDB blacklist or reporting abusive IPs to AbuseIPDB
+logging: false
+# Whether to log filtering/blacklisting actions to the Grav debug log (useful for troubleshooting custom filters)
 enable_blacklisting: false
 # Whether to block IPs that appear on the blacklist
 sources:

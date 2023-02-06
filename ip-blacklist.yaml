@@ -1,5 +1,6 @@
 enabled: true
 abuseipdb_key: null
+logging: false
 enable_blacklisting: false
 sources:
   local: false

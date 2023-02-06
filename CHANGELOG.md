@@ -1,3 +1,9 @@
+# v1.0.7
+## 06-02-2023
+
+1. [](#new)
+    * Added `logging` config option to log filtering/blacklisting actions to help troubleshoot custom filters.
+
 # v1.0.6
 ## 31-01-2023
 
